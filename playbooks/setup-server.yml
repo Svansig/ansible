@@ -1,0 +1,19 @@
+- hosts: all
+  remote_user: svansig
+
+  tasks:
+
+    - name: Install K3S Server
+      shell: "curl -sfL https://get.k3s.io | sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --tls-san 192.168.1.9"
+      args:
+        warn: no
+      environment:
+        K3S_DATASTORE_ENDPOINT: 'mysql://k3s_user:k3s_pass@tcp(192.168.1.9:3306)/k3s_datastore'
+        INSTALL_K3S_VERSION: v1.19.5+k3s2
+      become: yes
+
+    - name: Change permissions for the yml file
+      become: yes
+      ansible.builtin.file:
+        path: /etc/rancher/k3s/k3s.yaml
+        mode: '0644'

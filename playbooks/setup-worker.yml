@@ -1,0 +1,14 @@
+- hosts: all
+  remote_user: svansig
+
+  tasks:
+
+    - name: Install K3S Worker
+      shell: "curl -sfL https://get.k3s.io | sh -"
+      args:
+        warn: no
+      environment:
+        INSTALL_K3S_VERSION: v1.19.5+k3s2
+        K3S_URL: https://192.168.1.9:6443
+        K3S_TOKEN: K10d24c1ba88214871393e2c8c0a03e4884ae8421aab716731559d4cdc01f67cfc2::server:7568d79262527af286afd1cbf72cab30
+      become: yes
